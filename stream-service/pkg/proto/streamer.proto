@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package="./pkg/pb";
+
+service StreamService{
+    rpc Upload(stream  UploadRequest) returns(UploadResponse);
+}
+
+// To upload the file as stream
+message UploadRequest {
+    oneof data{ // either file metadata or file buffers (initially file metadata and then stream buffer data)
+        FileMetaData info = 1;
+        bytes buffer  = 2; // file data as array of bytes
+    };
+}
+
+message FileMetaData {
+    string name = 1; // file name
+    string contentType = 2; // file type
+}
+
+
+message UploadResponse{
+    uint64 id = 1;
+}
