@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"stream-service/pkg/config"
+	"stream-service/pkg/domain"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -17,7 +18,9 @@ func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	err = db.AutoMigrate()
+	err = db.AutoMigrate(
+		domain.FileDetails{},
+	)
 
 	if err != nil {
 		return nil, err

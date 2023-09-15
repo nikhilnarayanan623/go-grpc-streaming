@@ -40,5 +40,8 @@ wire: ## Generate wire_gen.go
 proto: ## To generate go files from proto
 	protoc --go_out=. --go-grpc_out=. ./pkg/proto/*.proto
 
+mock: ## To gernerate mock files for test
+	mockgen -source ./pkg/repository/interfaces/stream.go -destination ./pkg/mock/mock_repo/stream_mock.go -package=mock_repo
+
 help: ## Display this help screen
 	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
