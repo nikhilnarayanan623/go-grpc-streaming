@@ -1,0 +1,25 @@
+name: Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ' 1.21.0'
+
+    - name: Build # Tuild stream service
+      run: cd stream-service && go build ./cmd/api
+
+    - name: Test # Test on stream service
+      run: cd stream-service && go test -v ./...
