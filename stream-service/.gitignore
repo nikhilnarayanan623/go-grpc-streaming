@@ -35,3 +35,6 @@ go.work
 
 # Code Coverage
 code-coverage.*
+
+# File storage
+/uploads

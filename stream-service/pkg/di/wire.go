@@ -8,6 +8,7 @@ import (
 	"stream-service/pkg/api/service"
 	"stream-service/pkg/config"
 	"stream-service/pkg/db"
+	"stream-service/pkg/file"
 	"stream-service/pkg/repository"
 	"stream-service/pkg/usecase"
 
@@ -19,6 +20,7 @@ func InitializeAPI(cfg config.Config) (*api.Server, error) {
 	wire.Build(
 		db.ConnectDatabase,
 		repository.NewStreamRepository,
+		file.NewHandler,
 		usecase.NewStreamUseCase,
 		service.NewStreamService,
 		api.NewServerGRPC,

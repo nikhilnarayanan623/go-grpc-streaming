@@ -11,6 +11,7 @@ import (
 	"stream-service/pkg/api/service"
 	"stream-service/pkg/config"
 	"stream-service/pkg/db"
+	"stream-service/pkg/file"
 	"stream-service/pkg/repository"
 	"stream-service/pkg/usecase"
 )
@@ -23,7 +24,8 @@ func InitializeAPI(cfg config.Config) (*api.Server, error) {
 		return nil, err
 	}
 	streamRepository := repository.NewStreamRepository(gormDB)
-	streamUseCase := usecase.NewStreamUseCase(streamRepository)
+	handler := file.NewHandler()
+	streamUseCase := usecase.NewStreamUseCase(streamRepository, handler)
 	streamServiceServer := service.NewStreamService(streamUseCase)
 	server, err := api.NewServerGRPC(cfg, streamServiceServer)
 	if err != nil {
