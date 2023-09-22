@@ -4,6 +4,7 @@ import (
 	"api-gateway/pkg/api/handler/interfaces"
 	clientinterface "api-gateway/pkg/client/interfaces"
 	"api-gateway/pkg/models/request"
+	"api-gateway/pkg/utils"
 	"context"
 	"net/http"
 
@@ -21,17 +22,14 @@ func NewStreamHandler(client clientinterface.StreamClient) interfaces.StreamHand
 }
 
 func (s *streamHandler) Upload(ctx echo.Context) error {
-
-	// var body request.FileDetails
-
+	// get file name from form values
 	name := ctx.FormValue("name")
 	if name == "" {
 		return ctx.JSON(http.StatusBadRequest, echo.Map{
-
 			"message": "File name not provided",
 		})
 	}
-
+	// get file as form file
 	fh, err := ctx.FormFile("file")
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, echo.Map{
@@ -40,11 +38,24 @@ func (s *streamHandler) Upload(ctx echo.Context) error {
 			"error":   err.Error(),
 		})
 	}
+	// get the file content type
+	contentType, err := utils.GetContentType(fh)
 
-	id, err := s.client.Upload(context.Background(), request.FileDetails{
-		Name:       name,
-		FileHeader: fh,
-	})
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, echo.Map{
+
+			"message": "Failed to get file content type",
+			"error":   err.Error(),
+		})
+	}
+
+	fileDetails := request.FileDetails{
+		Name:        name,
+		FileHeader:  fh,
+		ContentType: contentType,
+	}
+	/// upload the file to client
+	id, err := s.client.Upload(context.Background(), fileDetails)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, echo.Map{
 

@@ -47,7 +47,7 @@ func (c *streamClient) Upload(ctx context.Context, fileDetails request.FileDetai
 
 		Info: &pb.FileMetaData{
 			Name:        fileDetails.Name,
-			ContentType: "NOT NOW",
+			ContentType: fileDetails.ContentType,
 		},
 	}
 
