@@ -7,7 +7,7 @@ import (
 
 type Config struct {
 	ApiPort           string `mapstructure:"API_PORT"`
-	StreamServiceHost string `mapstructure:"STREAMER_SERVICE_PORT"`
+	StreamServiceHost string `mapstructure:"STREAMER_SERVICE_HOST"`
 	StreamServicePort string `mapstructure:"STREAMER_SERVICE_PORT"`
 }
 
