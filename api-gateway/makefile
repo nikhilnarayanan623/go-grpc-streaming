@@ -46,5 +46,8 @@ swagger: ## install swagger and its dependencies for generate swagger using swag
 swag: ## Generate swagger docs
 	swag init -g pkg/api/server.go -o ./cmd/api/docs
 
+proto: ## To generate go files from proto
+	protoc --go_out=. --go-grpc_out=. ./pkg/proto/*.proto
+
 help: ## Display this help screen
 	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

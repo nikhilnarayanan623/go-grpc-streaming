@@ -1,8 +1,8 @@
 package main
 
 import (
-	"api-gateway/pkg/api"
 	"api-gateway/pkg/config"
+	"api-gateway/pkg/di"
 	"log"
 )
 
@@ -13,10 +13,10 @@ func main() {
 		log.Fatalf("failed to load config: %v", err)
 	}
 
-	server := api.NewServerHTTP(cfg)
+	server, err := di.InitializeAPI(cfg)
+	if err != nil {
+		log.Fatalf("failed to initialize api : %v", err)
+	}
 
 	server.Start()
-	if err != nil {
-		log.Fatalf("failed to start server: %v", err)
-	}
 }
